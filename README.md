@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Clone the repository:
 ```
-git clone https://github.com/<your-github-username>/node-in-memory-db.git
+git clone git@github.com:jmurphy1196/node-in-memory-database.git
 ```
 
 2. Change to the project directory:
