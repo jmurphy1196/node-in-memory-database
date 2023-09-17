@@ -13,7 +13,6 @@ class Client {
     });
 
     this.socket.on("data", (data) => {
-      // If there's partial data from the last data event, prepend it
       if (this.partialData) {
         data = Buffer.concat([this.partialData, data]);
         this.partialData = null;
@@ -23,7 +22,6 @@ class Client {
         const resp = this.protocol.handleRequest(data);
         this.resolveResponse(resp);
       } catch (error) {
-        // If the message is incomplete, buffer it and wait for more data
         if (error.message === "Line end not found") {
           this.partialData = data;
         } else {

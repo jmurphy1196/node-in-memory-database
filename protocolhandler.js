@@ -60,7 +60,6 @@ class ProtocolHandler {
       throw new Error("Bad request");
     }
 
-    // Move the cursor past the first byte
     this.cursor++;
 
     return handler.call(this, buffer);
@@ -83,7 +82,7 @@ class ProtocolHandler {
     if (length === -1) return null;
 
     let start = this.cursor;
-    this.cursor += length + 2; // Move cursor past the string data and the trailing \r\n
+    this.cursor += length + 2;
     return buffer.slice(start, start + length).toString();
   }
 
@@ -118,8 +117,6 @@ class ProtocolHandler {
 
     return line;
   }
-
-  // Note: Write methods will be similar but in reverse. They will construct Buffers based on the input.
 }
 
 module.exports = {
