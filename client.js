@@ -75,6 +75,9 @@ class Client {
   async mset(...items) {
     return await this.execute("MSET", ...items);
   }
+  async restore() {
+    return await this.execute("RESTORE");
+  }
 }
 
 module.exports = {
