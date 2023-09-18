@@ -14,6 +14,7 @@ class Server extends EventEmitter {
     this.kv = new Map();
     this.commands = this.getCommands();
     this.protocolHandler = new ProtocolHandler();
+    this.currentLog = `log-${Date.now()}.txt`;
   }
 
   connectionHandler(socket) {
@@ -28,12 +29,15 @@ class Server extends EventEmitter {
         let response = this.getResponse(request);
         const command = request[0].toUpperCase();
         if (command !== "RESTORE" && command !== "FLUSH" && command !== "GET") {
-          const filePath = path.join(__dirname, "log.txt");
+          const filePath = path.join(__dirname + "/logs", this.currentLog);
           try {
             await fs.appendFile(filePath, `"${data}"`);
           } catch (err) {
             console.error("there was an error logging to the file", err);
           }
+        } else if (command === "FLUSH") {
+          //create a new log file since last flush
+          this.currentLog = `log-${Date.now()}.txt`;
         }
         console.log(typeof response);
         console.log("INSTANCE OF", response instanceof Promise);
@@ -114,11 +118,14 @@ class Server extends EventEmitter {
     }
     return this.kv.size;
   }
-  async restore() {
+  async restore(fileName) {
     try {
       // Read the file content
       console.log("restoring from logs...");
-      const data = await fs.readFile(path.join(__dirname, "log.txt"), "utf-8");
+      const data = await fs.readFile(
+        path.join(__dirname + "/logs", fileName),
+        "utf-8"
+      );
 
       // Extract content between double quotes
       const matches = data.match(/"(.*?)"/gs);

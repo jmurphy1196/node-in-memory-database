@@ -50,7 +50,6 @@ class ProtocolHandler {
   }
   handleRequest(buffer) {
     const firstByte = decoder.write(buffer.slice(this.cursor, this.cursor + 1));
-    console.log("THIS IS THE FIRSTBYTE", firstByte);
     if (!firstByte) {
       throw new Error("Disconnect");
     }

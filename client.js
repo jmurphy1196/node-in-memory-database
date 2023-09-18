@@ -75,8 +75,8 @@ class Client {
   async mset(...items) {
     return await this.execute("MSET", ...items);
   }
-  async restore() {
-    return await this.execute("RESTORE");
+  async restore(fileName) {
+    return await this.execute("RESTORE", fileName);
   }
 }
 
